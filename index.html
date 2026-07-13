@@ -18,6 +18,8 @@
       .card-poll   { @apply border-t border-gray-200 px-5 py-3 flex items-center justify-between; }
       .vote-btn    { @apply text-sm font-medium flex items-center gap-1.5 text-gray-400 hover:text-[#2d6a4f] transition-colors cursor-pointer bg-transparent border-0 p-0; }
       .vote-btn.voted { @apply text-[#2d6a4f] font-semibold; }
+      .card-winner     { @apply ring-2 ring-[#2d6a4f]; }
+      .count-winner    { @apply text-[#2d6a4f] font-semibold; }
     }
   </style>
 </head>
@@ -196,10 +198,23 @@
       btn.querySelector('.vote-label').textContent = myVote === id ? '✓ Voted' : 'Vote';
       btn.classList.toggle('voted', myVote === id);
     });
+    // Update counts and clear old highlights
     document.querySelectorAll('.vote-count').forEach(el => {
       const n = counts[el.dataset.id] || 0;
       el.textContent = n === 1 ? '1 vote' : `${n} votes`;
+      el.classList.remove('count-winner');
     });
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('card-winner'));
+    // Highlight the leader(s)
+    const maxVotes = Math.max(0, ...Object.values(counts));
+    if (maxVotes > 0) {
+      document.querySelectorAll('.vote-count').forEach(el => {
+        if ((counts[el.dataset.id] || 0) === maxVotes) {
+          el.classList.add('count-winner');
+          el.closest('.card').classList.add('card-winner');
+        }
+      });
+    }
   }
 
   async function castVote(id) {
