@@ -133,6 +133,29 @@
       font-style: italic;
     }
 
+    .menu-list {
+      border-top: 1px solid var(--border);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .menu-item {
+      font-size: 0.83rem;
+      color: var(--text);
+    }
+
+    .menu-item .label {
+      font-weight: 600;
+      color: var(--green-dark);
+      margin-right: 0.3rem;
+    }
+
+    .menu-item .desc {
+      color: var(--muted);
+    }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -198,15 +221,20 @@
     </div>
   </div>
 
-  <!-- Culmann -->
+  <!-- Polymensa -->
   <div class="card">
     <div class="card-header">
-      <span class="emoji">🍕</span>
-      <span class="name">Culmann</span>
+      <span class="emoji">🏔️</span>
+      <span class="name">Polymensa</span>
     </div>
     <div class="card-body">
-      <a class="btn btn-menu" href="https://edis-culmann.ch/speisekarte.html" target="_blank" rel="noopener noreferrer">📋 Speisekarte ↗</a>
-      <a class="btn btn-site" href="https://edis-culmann.ch/" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
+      <a class="btn btn-menu" id="menu-polymensa" href="#" target="_blank" rel="noopener noreferrer">📋 Today's menu ↗</a>
+      <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/polyterrasse.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
+    </div>
+    <div class="menu-list">
+      <div class="menu-item"><span class="label">STREET</span> Crispy Spicy Pork <span class="desc">— Pommes frites, Kabissalat, Onion Rings, Wasabi Mayonnaise</span></div>
+      <div class="menu-item"><span class="label">GARDEN 🌱</span> Gnocchi Caponata (vegan) <span class="desc">— Auberginen, Peperoni, Kapern, Oliven, Veganer Reibkäse</span></div>
+      <div class="menu-item"><span class="label">HOME</span> Poulet Zitronenpfeffer <span class="desc">— Zitronenpfeffersauce, Gemüsewellen, Pilawreis</span></div>
     </div>
   </div>
 
@@ -257,6 +285,7 @@
   document.getElementById('menu-archimedes').href    = ethMenuUrl(8);
   document.getElementById('menu-asienmensa').href    = ethMenuUrl(3);
   document.getElementById('menu-dozentenfoyer').href = ethMenuUrl(5);
+  document.getElementById('menu-polymensa').href    = ethMenuUrl(9);
 </script>
 
 </body>
