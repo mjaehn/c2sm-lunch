@@ -4,180 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>C2SM Lunch Menus</title>
-  <style>
-    :root {
-      --green: #2d6a4f;
-      --green-dark: #1e4d37;
-      --bg: #f4f6f8;
-      --card: #ffffff;
-      --border: #dde1e7;
-      --text: #1a1a2e;
-      --muted: #6b7280;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    header {
-      background: var(--green);
-      color: #fff;
-      text-align: center;
-      padding: 2.5rem 1rem 2rem;
-    }
-
-    header h1 {
-      font-size: clamp(1.5rem, 4vw, 2.25rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    header .subtitle {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      opacity: 0.85;
-    }
-
-    main {
-      max-width: 860px;
-      margin: 2rem auto;
-      padding: 0 1.5rem 3rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-
-    @media (max-width: 540px) {
-      main { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 1rem 1.25rem;
-    }
-
-    .emoji {
-      font-size: 1.5rem;
-      flex-shrink: 0;
-      line-height: 1;
-    }
-
-    .name {
-      font-weight: 600;
-      font-size: 1.05rem;
-      color: var(--text);
-    }
-
-    .card-body {
-      border-top: 1px solid var(--border);
-      padding: 1.1rem 1.25rem;
-      display: flex;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.55rem 1rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
-      white-space: nowrap;
-    }
-
-    .btn-menu {
-      background: var(--green);
-      border: 1px solid var(--green);
-      color: #fff;
-    }
-
-    .btn-menu:hover {
-      background: var(--green-dark);
-      border-color: var(--green-dark);
-    }
-
-    .btn-site {
-      background: #fff;
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .btn-site:hover {
-      background: var(--bg);
-      border-color: var(--muted);
-    }
-
-    .no-menu {
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    .menu-list {
-      border-top: 1px solid var(--border);
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .menu-item {
-      font-size: 0.83rem;
-      color: var(--text);
-    }
-
-    .menu-item .label {
-      font-weight: 600;
-      color: var(--green-dark);
-      margin-right: 0.3rem;
-    }
-
-    .menu-item .desc {
-      color: var(--muted);
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: var(--muted);
-      font-size: 0.82rem;
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .card        { @apply bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm; }
+      .card-header { @apply flex items-center gap-3 px-5 py-4; }
+      .card-body   { @apply border-t border-gray-200 px-5 py-4 flex flex-wrap gap-2 items-center; }
+      .btn         { @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap no-underline; }
+      .btn-menu    { @apply bg-[#2d6a4f] border border-[#2d6a4f] text-white hover:bg-[#1e4d37] hover:border-[#1e4d37]; }
+      .btn-site    { @apply bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
+      .no-menu     { @apply text-sm text-gray-400 italic; }
     }
   </style>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900 min-h-screen">
 
-<header>
-  <h1>🍽️ C2SM Lunch Menus</h1>
-  <p class="subtitle" id="date-display"></p>
+<header class="bg-[#2d6a4f] text-white text-center px-4 pt-10 pb-8">
+  <h1 class="text-3xl font-bold tracking-tight">🍽️ C2SM Lunch Menus</h1>
+  <p class="mt-2 text-base opacity-85" id="date-display"></p>
 </header>
 
-<main>
+<main class="max-w-[860px] mx-auto mt-8 px-6 pb-12 grid grid-cols-2 gap-3 max-[540px]:grid-cols-1">
 
   <!-- Hot Pasta -->
   <div class="card">
     <div class="card-header">
-      <span class="emoji">🍝</span>
-      <span class="name">Hot Pasta</span>
+      <span class="text-2xl leading-none shrink-0">🍝</span>
+      <span class="font-semibold">Hot Pasta</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" href="https://hotpasta.ch/wp-content/uploads/2023/01/HotPasta-Lunch.pdf" target="_blank" rel="noopener noreferrer">📋 Lunch menu ↗</a>
@@ -188,8 +41,12 @@
   <!-- La Fontana -->
   <div class="card">
     <div class="card-header">
-      <span class="emoji">🇮🇹</span>
-      <span class="name">La Fontana</span>
+      <span class="shrink-0 inline-flex rounded-sm overflow-hidden w-8 h-6 border border-gray-200">
+        <span class="flex-1 bg-[#009246]"></span>
+        <span class="flex-1 bg-white"></span>
+        <span class="flex-1 bg-[#ce2b37]"></span>
+      </span>
+      <span class="font-semibold">La Fontana</span>
     </div>
     <div class="card-body">
       <a class="btn btn-site" href="https://www.fontanafontana.ch/bistro" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
@@ -200,8 +57,8 @@
   <!-- Archimedes -->
   <div class="card">
     <div class="card-header">
-      <span class="emoji">🥗</span>
-      <span class="name">Archimedes</span>
+      <span class="text-2xl leading-none shrink-0">🥗</span>
+      <span class="font-semibold">Archimedes</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" id="menu-archimedes" href="#" target="_blank" rel="noopener noreferrer">📋 Today's menu ↗</a>
@@ -212,8 +69,8 @@
   <!-- Asienmensa -->
   <div class="card">
     <div class="card-header">
-      <span class="emoji">🍚</span>
-      <span class="name">Asienmensa</span>
+      <span class="text-2xl leading-none shrink-0">🍚</span>
+      <span class="font-semibold">Asienmensa</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" id="menu-asienmensa" href="#" target="_blank" rel="noopener noreferrer">📋 Today's menu ↗</a>
@@ -224,25 +81,20 @@
   <!-- Polymensa -->
   <div class="card">
     <div class="card-header">
-      <span class="emoji">🏔️</span>
-      <span class="name">Polymensa</span>
+      <span class="text-2xl leading-none shrink-0">🏔️</span>
+      <span class="font-semibold">Polymensa</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" id="menu-polymensa" href="#" target="_blank" rel="noopener noreferrer">📋 Today's menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/polyterrasse.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
-    </div>
-    <div class="menu-list">
-      <div class="menu-item"><span class="label">STREET</span> Crispy Spicy Pork <span class="desc">— Pommes frites, Kabissalat, Onion Rings, Wasabi Mayonnaise</span></div>
-      <div class="menu-item"><span class="label">GARDEN 🌱</span> Gnocchi Caponata (vegan) <span class="desc">— Auberginen, Peperoni, Kapern, Oliven, Veganer Reibkäse</span></div>
-      <div class="menu-item"><span class="label">HOME</span> Poulet Zitronenpfeffer <span class="desc">— Zitronenpfeffersauce, Gemüsewellen, Pilawreis</span></div>
     </div>
   </div>
 
   <!-- Dozentenfoyer -->
   <div class="card">
     <div class="card-header">
-      <span class="emoji">👔</span>
-      <span class="name">Dozentenfoyer</span>
+      <span class="text-2xl leading-none shrink-0">👔</span>
+      <span class="font-semibold">Dozentenfoyer</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" id="menu-dozentenfoyer" href="#" target="_blank" rel="noopener noreferrer">📋 Today's menu ↗</a>
@@ -253,8 +105,8 @@
   <!-- Kleine Freiheit -->
   <div class="card">
     <div class="card-header">
-      <span class="emoji">🚠</span>
-      <span class="name">Kleine Freiheit</span>
+      <span class="text-2xl leading-none shrink-0">🚠</span>
+      <span class="font-semibold">Kleine Freiheit</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" href="https://kleinefreiheit.ch/angebot" target="_blank" rel="noopener noreferrer">📋 Angebot ↗</a>
@@ -264,7 +116,7 @@
 
 </main>
 
-<footer>
+<footer class="text-center py-8 text-gray-400 text-sm">
   C2SM Lunch Menus
 </footer>
 
