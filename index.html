@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>C2SM Lunch Menus</title>
+  <title>C2SM Lunch Poll</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style type="text/tailwindcss">
     @layer components {
       .card        { @apply bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm; }
-      .card-header { @apply flex items-center gap-3 px-5 py-4; }
-      .card-body   { @apply border-t border-gray-200 px-5 py-4 flex flex-wrap gap-2 items-center; }
+      .card-header { @apply flex items-center gap-3 px-5 py-3; }
+      .card-body   { @apply border-t border-gray-200 px-5 py-3 flex flex-wrap gap-2 items-center; }
       .btn         { @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap no-underline; }
       .btn-menu    { @apply bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
       .btn-site    { @apply bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
@@ -27,7 +27,7 @@
 <body class="bg-gray-100 text-gray-900 min-h-screen">
 
 <header class="bg-[#2d6a4f] text-white text-center px-4 pt-5 pb-4">
-  <h1 class="text-2xl font-bold tracking-tight">🍽️ C2SM Lunch Menus</h1>
+  <h1 class="text-2xl font-bold tracking-tight">🍽️ C2SM Lunch Poll</h1>
   <p class="mt-1 text-sm opacity-85" id="date-display"></p>
 </header>
 
@@ -173,8 +173,8 @@
 
 </main>
 
-<footer class="text-center py-8 text-gray-400 text-sm">
-  C2SM Lunch Menus
+<footer class="text-center py-2 text-gray-400 text-sm">
+  C2SM Lunch Poll
 </footer>
 
 <script>
@@ -234,7 +234,23 @@
     timeSelect.appendChild(opt);
   });
 
+  // How far the given "HH:MM" slot is from the current time, today
+  function timeStatus(hhmm) {
+    const [h, m] = hhmm.split(':').map(Number);
+    const now = new Date();
+    const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+    const diffMin = Math.round((target - now) / 60000);
+    if (diffMin === 0) return 'now';
+    const abs = Math.abs(diffMin);
+    const hh = Math.floor(abs / 60);
+    const mm = abs % 60;
+    const duration = hh > 0 ? `${hh} h ${mm} min` : `${mm} min`;
+    return diffMin > 0 ? `in ${duration}` : `${duration} ago`;
+  }
+
   let timeCounts = {};
+  let lastRestaurantCounts = {};
+  let lastTimeCounts = {};
 
   function updateTimeCountDisplay() {
     const n = timeCounts[timeSelect.value] || 0;
@@ -257,7 +273,7 @@
       return;
     }
     const place = topRestaurants.keys.map(id => RESTAURANT_NAMES[id] || id).join(' / ');
-    const time = topTimes.keys.join(' / ');
+    const time = topTimes.keys.map(t => `${t} (${timeStatus(t)})`).join(' / ');
     if (topRestaurants.max > 0 && topTimes.max > 0) {
       summary.textContent = `🏆 Leading so far: ${place} at ${time}`;
     } else if (topRestaurants.max > 0) {
@@ -316,6 +332,8 @@
     timeVoteBtn.classList.toggle('voted', !!myTimeVote);
     updateTimeCountDisplay();
 
+    lastRestaurantCounts = counts;
+    lastTimeCounts = timeCounts;
     updateSummary(counts, timeCounts);
   }
 
@@ -355,6 +373,9 @@
     .subscribe();
 
   loadVotes();
+
+  // Keep the "in X min" / "X min ago" status fresh even without new votes
+  setInterval(() => updateSummary(lastRestaurantCounts, lastTimeCounts), 30000);
 </script>
 
 </body>
