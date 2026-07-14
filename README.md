@@ -10,7 +10,7 @@ Serve the site locally:
 ./serve.sh
 ```
 
-This starts a static file server (Python or `npx serve`) at `http://localhost:8080`.
+This starts a static file server with live-reload (`live-server`, via `npx`) at `http://localhost:8080` — the browser refreshes automatically on any file change. Falls back to a plain Python server (no live-reload) if Node isn't available.
 
 ## Polling backend
 
