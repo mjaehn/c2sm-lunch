@@ -15,11 +15,12 @@
       .btn-menu    { @apply bg-[#2d6a4f] border border-[#2d6a4f] text-white hover:bg-[#1e4d37] hover:border-[#1e4d37]; }
       .btn-site    { @apply bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
       .no-menu     { @apply text-sm text-gray-400 italic; }
-      .card-poll   { @apply border-t border-gray-200 px-5 py-3 flex items-center justify-between; }
-      .vote-btn    { @apply text-sm font-medium flex items-center gap-1.5 text-gray-400 hover:text-[#2d6a4f] transition-colors cursor-pointer bg-transparent border-0 p-0; }
-      .vote-btn.voted { @apply text-[#2d6a4f] font-semibold; }
+      .card-poll   { @apply border-t border-gray-200 px-5 py-3 flex items-center justify-between gap-3 flex-wrap; }
+      .vote-btn    { @apply text-sm font-semibold flex items-center gap-1.5 text-[#2d6a4f] bg-[#2d6a4f]/10 border border-[#2d6a4f]/40 rounded-full px-3.5 py-1.5 hover:bg-[#2d6a4f]/20 hover:border-[#2d6a4f] hover:shadow-sm transition-colors cursor-pointer; }
+      .vote-btn.voted { @apply bg-[#2d6a4f] text-white border-[#2d6a4f] shadow-sm; }
       .card-winner     { @apply ring-2 ring-[#2d6a4f]; }
       .count-winner    { @apply text-[#2d6a4f] font-semibold; }
+      .time-select { @apply text-sm font-medium border border-gray-300 rounded-md px-2.5 py-1.5 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] focus:border-[#2d6a4f]; }
     }
   </style>
 </head>
@@ -30,7 +31,29 @@
   <p class="mt-2 text-base opacity-85" id="date-display"></p>
 </header>
 
-<main class="max-w-[860px] mx-auto mt-8 px-6 pb-12 grid grid-cols-2 gap-3 max-[540px]:grid-cols-1">
+<div class="max-w-[860px] mx-auto mt-6 px-6">
+  <div class="rounded-xl border border-[#2d6a4f]/30 bg-[#2d6a4f]/5 px-5 py-4 text-center">
+    <p class="text-sm font-semibold text-[#2d6a4f]" id="summary-text">No votes yet — be the first to vote!</p>
+  </div>
+</div>
+
+<div class="max-w-[860px] mx-auto mt-4 px-6">
+  <div class="card">
+    <div class="card-header">
+      <span class="text-2xl leading-none shrink-0">🕒</span>
+      <span class="font-semibold">Preferred Time</span>
+    </div>
+    <div class="card-poll">
+      <select class="time-select" id="time-select"></select>
+      <div class="flex items-center gap-3">
+        <span class="vote-count text-xs text-gray-400" id="time-vote-count">0 votes</span>
+        <button class="vote-btn" id="time-vote-btn" onclick="castTimeVote()"><span>👍</span><span class="vote-label">Vote</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="max-w-[860px] mx-auto mt-4 px-6 pb-12 grid grid-cols-2 gap-3 max-[540px]:grid-cols-1">
 
   <!-- Hot Pasta -->
   <div class="card">
@@ -184,37 +207,116 @@
   let sessionId = localStorage.getItem(SESSION_KEY);
   if (!sessionId) { sessionId = crypto.randomUUID(); localStorage.setItem(SESSION_KEY, sessionId); }
 
+  const RESTAURANT_NAMES = {
+    'hot-pasta': 'Hot Pasta',
+    'la-fontana': 'La Fontana',
+    'archimedes': 'Archimedes',
+    'asienmensa': 'Asienmensa',
+    'polymensa': 'Polymensa',
+    'dozentenfoyer': 'Dozentenfoyer',
+    'kleine-freiheit': 'Kleine Freiheit',
+  };
+
+  // Populate the time picker: 15' steps, 11:00-14:00, defaulting to 12:30 Zurich time
+  const TIME_SLOTS = [];
+  for (let h = 11; h <= 14; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      if (h === 14 && m > 0) break;
+      TIME_SLOTS.push(`${pad(h)}:${pad(m)}`);
+    }
+  }
+  const timeSelect = document.getElementById('time-select');
+  TIME_SLOTS.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    if (t === '12:30') opt.selected = true;
+    timeSelect.appendChild(opt);
+  });
+
+  let timeCounts = {};
+
+  function updateTimeCountDisplay() {
+    const n = timeCounts[timeSelect.value] || 0;
+    document.getElementById('time-vote-count').textContent = n === 1 ? '1 vote' : `${n} votes`;
+  }
+  timeSelect.addEventListener('change', updateTimeCountDisplay);
+
+  function updateSummary(restaurantCounts, timeCounts) {
+    const topOf = counts => {
+      const max = Math.max(0, ...Object.values(counts));
+      if (max === 0) return { max, keys: [] };
+      return { max, keys: Object.keys(counts).filter(k => counts[k] === max) };
+    };
+    const topRestaurants = topOf(restaurantCounts);
+    const topTimes = topOf(timeCounts);
+    const summary = document.getElementById('summary-text');
+
+    if (topRestaurants.max === 0 && topTimes.max === 0) {
+      summary.textContent = 'No votes yet — be the first to vote!';
+      return;
+    }
+    const place = topRestaurants.keys.map(id => RESTAURANT_NAMES[id] || id).join(' / ');
+    const time = topTimes.keys.join(' / ');
+    if (topRestaurants.max > 0 && topTimes.max > 0) {
+      summary.textContent = `🏆 Leading so far: ${place} at ${time}`;
+    } else if (topRestaurants.max > 0) {
+      summary.textContent = `🏆 Leading location so far: ${place} — no time votes yet`;
+    } else {
+      summary.textContent = `🏆 Preferred time so far: ${time} — no location votes yet`;
+    }
+  }
+
   async function loadVotes() {
-    const { data, error } = await sb.from('poll_votes').select('restaurant, session_id').eq('date', today);
-    if (error) { console.error('Poll:', error); return; }
+    const [{ data: rData, error: rErr }, { data: tData, error: tErr }] = await Promise.all([
+      sb.from('poll_votes').select('restaurant, session_id').eq('date', today),
+      sb.from('poll_time_votes').select('time_slot, session_id').eq('date', today),
+    ]);
+    if (rErr) console.error('Poll:', rErr);
+    if (tErr) console.error('Time poll:', tErr);
+
+    // --- Restaurant votes ---
     const counts = {};
     let myVote = null;
-    for (const row of data) {
+    for (const row of rData || []) {
       counts[row.restaurant] = (counts[row.restaurant] || 0) + 1;
       if (row.session_id === sessionId) myVote = row.restaurant;
     }
-    document.querySelectorAll('.vote-btn').forEach(btn => {
+    document.querySelectorAll('main .vote-btn').forEach(btn => {
       const id = btn.dataset.id;
       btn.querySelector('.vote-label').textContent = myVote === id ? '✓ Voted' : 'Vote';
       btn.classList.toggle('voted', myVote === id);
     });
-    // Update counts and clear old highlights
-    document.querySelectorAll('.vote-count').forEach(el => {
+    document.querySelectorAll('main .vote-count').forEach(el => {
       const n = counts[el.dataset.id] || 0;
       el.textContent = n === 1 ? '1 vote' : `${n} votes`;
       el.classList.remove('count-winner');
     });
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('card-winner'));
-    // Highlight the leader(s)
+    document.querySelectorAll('main .card').forEach(c => c.classList.remove('card-winner'));
     const maxVotes = Math.max(0, ...Object.values(counts));
     if (maxVotes > 0) {
-      document.querySelectorAll('.vote-count').forEach(el => {
+      document.querySelectorAll('main .vote-count').forEach(el => {
         if ((counts[el.dataset.id] || 0) === maxVotes) {
           el.classList.add('count-winner');
           el.closest('.card').classList.add('card-winner');
         }
       });
     }
+
+    // --- Time votes ---
+    timeCounts = {};
+    let myTimeVote = null;
+    for (const row of tData || []) {
+      timeCounts[row.time_slot] = (timeCounts[row.time_slot] || 0) + 1;
+      if (row.session_id === sessionId) myTimeVote = row.time_slot;
+    }
+    const timeVoteBtn = document.getElementById('time-vote-btn');
+    if (myTimeVote) timeSelect.value = myTimeVote;
+    timeVoteBtn.querySelector('.vote-label').textContent = myTimeVote ? '✓ Voted' : 'Vote';
+    timeVoteBtn.classList.toggle('voted', !!myTimeVote);
+    updateTimeCountDisplay();
+
+    updateSummary(counts, timeCounts);
   }
 
   async function castVote(id) {
@@ -231,9 +333,25 @@
     loadVotes();
   }
 
+  async function castTimeVote() {
+    const slot = timeSelect.value;
+    const { data: existing } = await sb.from('poll_time_votes')
+      .select('time_slot').eq('session_id', sessionId).eq('date', today).maybeSingle();
+    if (existing?.time_slot === slot) {
+      await sb.from('poll_time_votes').delete().eq('session_id', sessionId).eq('date', today);
+    } else {
+      await sb.from('poll_time_votes').upsert(
+        { session_id: sessionId, date: today, time_slot: slot },
+        { onConflict: 'session_id,date' }
+      );
+    }
+    loadVotes();
+  }
+
   // Push updates to all connected clients in real time
   sb.channel('poll')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'poll_votes', filter: `date=eq.${today}` }, loadVotes)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'poll_time_votes', filter: `date=eq.${today}` }, loadVotes)
     .subscribe();
 
   loadVotes();
