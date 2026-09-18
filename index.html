@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>C2SM Lunch Poll</title>
+  <title>C2SM Lunch Menus</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style type="text/tailwindcss">
     @layer components {
       .card        { @apply bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm; }
@@ -15,45 +14,17 @@
       .btn-menu    { @apply bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
       .btn-site    { @apply bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
       .no-menu     { @apply text-sm text-gray-400 italic; }
-      .card-poll   { @apply border-t border-gray-200 px-5 py-3 flex items-center justify-between gap-3 flex-wrap; }
-      .vote-btn    { @apply text-sm font-semibold flex items-center gap-1.5 text-[#2d6a4f] bg-[#2d6a4f]/10 border border-[#2d6a4f]/40 rounded-full px-3.5 py-1.5 hover:bg-[#2d6a4f]/20 hover:border-[#2d6a4f] hover:shadow-sm transition-colors cursor-pointer; }
-      .vote-btn.voted { @apply bg-[#2d6a4f] text-white border-[#2d6a4f] shadow-sm; }
-      .card-winner     { @apply ring-2 ring-[#2d6a4f]; }
-      .count-winner    { @apply text-[#2d6a4f] font-semibold; }
-      .time-select { @apply text-sm font-medium border border-gray-300 rounded-md px-2.5 py-1.5 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] focus:border-[#2d6a4f]; }
     }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-900 min-h-screen">
 
 <header class="bg-[#2d6a4f] text-white text-center px-4 pt-5 pb-4">
-  <h1 class="text-2xl font-bold tracking-tight">🍽️ C2SM Lunch Poll</h1>
+  <h1 class="text-2xl font-bold tracking-tight">🍽️ C2SM Lunch Menus</h1>
   <p class="mt-1 text-sm opacity-85" id="date-display"></p>
 </header>
 
-<div class="max-w-[860px] mx-auto mt-6 px-6">
-  <div class="rounded-xl border border-[#2d6a4f]/30 bg-[#2d6a4f]/5 px-5 py-4 text-center">
-    <p class="text-lg font-semibold text-[#2d6a4f]" id="summary-text">No votes yet — be the first to vote!</p>
-  </div>
-</div>
-
-<div class="max-w-[430px] mx-auto mt-4 px-6">
-  <div class="card">
-    <div class="card-header">
-      <span class="text-2xl leading-none shrink-0">🕒</span>
-      <span class="font-semibold">Preferred Time</span>
-    </div>
-    <div class="card-poll">
-      <select class="time-select" id="time-select"></select>
-      <div class="flex items-center gap-3">
-        <span class="vote-count text-xs text-gray-400" id="time-vote-count">0 votes</span>
-        <button class="vote-btn" id="time-vote-btn" onclick="castTimeVote()"><span>👍</span><span class="vote-label">Vote</span></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<main class="max-w-[1180px] mx-auto mt-4 px-6 pb-12 grid grid-cols-3 gap-3 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1">
+<main class="max-w-[1180px] mx-auto mt-6 px-6 pb-12 grid grid-cols-3 gap-3 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1">
 
   <!-- Hot Pasta -->
   <div class="card">
@@ -64,10 +35,6 @@
     <div class="card-body">
       <a class="btn btn-menu" href="https://hotpasta.ch/wp-content/uploads/2023/01/HotPasta-Lunch.pdf" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://hotpasta.ch/" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
-    </div>
-    <div class="card-poll">
-      <button class="vote-btn" data-id="hot-pasta" onclick="castVote('hot-pasta')"><span>👍</span><span class="vote-label">Vote</span></button>
-      <span class="vote-count text-xs text-gray-400" data-id="hot-pasta">0 votes</span>
     </div>
   </div>
 
@@ -85,9 +52,17 @@
       <a class="btn btn-site" href="https://www.fontanafontana.ch/bistro" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
       <span class="no-menu">No Menu available</span>
     </div>
-    <div class="card-poll">
-      <button class="vote-btn" data-id="la-fontana" onclick="castVote('la-fontana')"><span>👍</span><span class="vote-label">Vote</span></button>
-      <span class="vote-count text-xs text-gray-400" data-id="la-fontana">0 votes</span>
+  </div>
+
+  <!-- Culmann -->
+  <div class="card">
+    <div class="card-header">
+      <span class="text-2xl leading-none shrink-0">🍕</span>
+      <span class="font-semibold">Culmann</span>
+    </div>
+    <div class="card-body">
+      <a class="btn btn-site" href="https://edis-culmann.ch" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
+      <span class="no-menu">No Menu available</span>
     </div>
   </div>
 
@@ -101,10 +76,6 @@
       <a class="btn btn-menu" id="menu-archimedes" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/archimedes.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
-    <div class="card-poll">
-      <button class="vote-btn" data-id="archimedes" onclick="castVote('archimedes')"><span>👍</span><span class="vote-label">Vote</span></button>
-      <span class="vote-count text-xs text-gray-400" data-id="archimedes">0 votes</span>
-    </div>
   </div>
 
   <!-- Asienmensa -->
@@ -116,10 +87,6 @@
     <div class="card-body">
       <a class="btn btn-menu" id="menu-asienmensa" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/clausiusbar.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
-    </div>
-    <div class="card-poll">
-      <button class="vote-btn" data-id="asienmensa" onclick="castVote('asienmensa')"><span>👍</span><span class="vote-label">Vote</span></button>
-      <span class="vote-count text-xs text-gray-400" data-id="asienmensa">0 votes</span>
     </div>
   </div>
 
@@ -133,10 +100,6 @@
       <a class="btn btn-menu" id="menu-polymensa" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/polyterrasse.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
-    <div class="card-poll">
-      <button class="vote-btn" data-id="polymensa" onclick="castVote('polymensa')"><span>👍</span><span class="vote-label">Vote</span></button>
-      <span class="vote-count text-xs text-gray-400" data-id="polymensa">0 votes</span>
-    </div>
   </div>
 
   <!-- Dozentenfoyer -->
@@ -148,10 +111,6 @@
     <div class="card-body">
       <a class="btn btn-menu" id="menu-dozentenfoyer" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/dozentenfoyer.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
-    </div>
-    <div class="card-poll">
-      <button class="vote-btn" data-id="dozentenfoyer" onclick="castVote('dozentenfoyer')"><span>👍</span><span class="vote-label">Vote</span></button>
-      <span class="vote-count text-xs text-gray-400" data-id="dozentenfoyer">0 votes</span>
     </div>
   </div>
 
@@ -165,16 +124,12 @@
       <a class="btn btn-menu" href="https://kleinefreiheit.ch/angebot" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://kleinefreiheit.ch/" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
-    <div class="card-poll">
-      <button class="vote-btn" data-id="kleine-freiheit" onclick="castVote('kleine-freiheit')"><span>👍</span><span class="vote-label">Vote</span></button>
-      <span class="vote-count text-xs text-gray-400" data-id="kleine-freiheit">0 votes</span>
-    </div>
   </div>
 
 </main>
 
 <footer class="text-center py-2 text-gray-400 text-sm">
-  C2SM Lunch Poll
+  C2SM Lunch Menus
 </footer>
 
 <script>
@@ -194,188 +149,7 @@
   document.getElementById('menu-archimedes').href    = ethMenuUrl(8);
   document.getElementById('menu-asienmensa').href    = ethMenuUrl(3);
   document.getElementById('menu-dozentenfoyer').href = ethMenuUrl(5);
-  document.getElementById('menu-polymensa').href    = ethMenuUrl(9);
-
-  // Real-time poll via Supabase
-  const sb = supabase.createClient(
-    'https://dxdgvhqfexfmwywhzmux.supabase.co',
-    'sb_publishable_l2lJnHOIOs5F6P0xO1weVA_Jh_Vpb1A'
-  );
-
-  // Stable per-browser identity (no account required)
-  const SESSION_KEY = 'c2sm-session';
-  let sessionId = localStorage.getItem(SESSION_KEY);
-  if (!sessionId) { sessionId = crypto.randomUUID(); localStorage.setItem(SESSION_KEY, sessionId); }
-
-  const RESTAURANT_NAMES = {
-    'hot-pasta': 'Hot Pasta',
-    'la-fontana': 'La Fontana',
-    'archimedes': 'Archimedes',
-    'asienmensa': 'Asienmensa',
-    'polymensa': 'Polymensa',
-    'dozentenfoyer': 'Dozentenfoyer',
-    'kleine-freiheit': 'Kleine Freiheit',
-  };
-
-  // Populate the time picker: 15' steps, 11:00-14:00, defaulting to 12:30 Zurich time
-  const TIME_SLOTS = [];
-  for (let h = 11; h <= 14; h++) {
-    for (let m = 0; m < 60; m += 15) {
-      if (h === 14 && m > 0) break;
-      TIME_SLOTS.push(`${pad(h)}:${pad(m)}`);
-    }
-  }
-  const timeSelect = document.getElementById('time-select');
-  TIME_SLOTS.forEach(t => {
-    const opt = document.createElement('option');
-    opt.value = t;
-    opt.textContent = t;
-    if (t === '12:30') opt.selected = true;
-    timeSelect.appendChild(opt);
-  });
-
-  // How far the given "HH:MM" slot is from the current time, today
-  function timeStatus(hhmm) {
-    const [h, m] = hhmm.split(':').map(Number);
-    const now = new Date();
-    const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
-    const diffMin = Math.round((target - now) / 60000);
-    if (diffMin === 0) return 'now';
-    const abs = Math.abs(diffMin);
-    const hh = Math.floor(abs / 60);
-    const mm = abs % 60;
-    const duration = hh > 0 ? `${hh} h ${mm} min` : `${mm} min`;
-    return diffMin > 0 ? `in ${duration}` : `${duration} ago`;
-  }
-
-  let timeCounts = {};
-  let lastRestaurantCounts = {};
-  let lastTimeCounts = {};
-
-  function updateTimeCountDisplay() {
-    const n = timeCounts[timeSelect.value] || 0;
-    document.getElementById('time-vote-count').textContent = n === 1 ? '1 vote' : `${n} votes`;
-  }
-  timeSelect.addEventListener('change', updateTimeCountDisplay);
-
-  function updateSummary(restaurantCounts, timeCounts) {
-    const topOf = counts => {
-      const max = Math.max(0, ...Object.values(counts));
-      if (max === 0) return { max, keys: [] };
-      return { max, keys: Object.keys(counts).filter(k => counts[k] === max) };
-    };
-    const topRestaurants = topOf(restaurantCounts);
-    const topTimes = topOf(timeCounts);
-    const summary = document.getElementById('summary-text');
-
-    if (topRestaurants.max === 0 && topTimes.max === 0) {
-      summary.textContent = 'No votes yet — be the first to vote!';
-      return;
-    }
-    const place = topRestaurants.keys.map(id => RESTAURANT_NAMES[id] || id).join(' / ');
-    const time = topTimes.keys.map(t => `${t} (${timeStatus(t)})`).join(' / ');
-    if (topRestaurants.max > 0 && topTimes.max > 0) {
-      summary.textContent = `🏆 Leading so far: ${place} at ${time}`;
-    } else if (topRestaurants.max > 0) {
-      summary.textContent = `🏆 Leading location so far: ${place} — no time votes yet`;
-    } else {
-      summary.textContent = `🏆 Preferred time so far: ${time} — no location votes yet`;
-    }
-  }
-
-  async function loadVotes() {
-    const [{ data: rData, error: rErr }, { data: tData, error: tErr }] = await Promise.all([
-      sb.from('poll_votes').select('restaurant, session_id').eq('date', today),
-      sb.from('poll_time_votes').select('time_slot, session_id').eq('date', today),
-    ]);
-    if (rErr) console.error('Poll:', rErr);
-    if (tErr) console.error('Time poll:', tErr);
-
-    // --- Restaurant votes ---
-    const counts = {};
-    let myVote = null;
-    for (const row of rData || []) {
-      counts[row.restaurant] = (counts[row.restaurant] || 0) + 1;
-      if (row.session_id === sessionId) myVote = row.restaurant;
-    }
-    document.querySelectorAll('main .vote-btn').forEach(btn => {
-      const id = btn.dataset.id;
-      btn.querySelector('.vote-label').textContent = myVote === id ? '✓ Voted' : 'Vote';
-      btn.classList.toggle('voted', myVote === id);
-    });
-    document.querySelectorAll('main .vote-count').forEach(el => {
-      const n = counts[el.dataset.id] || 0;
-      el.textContent = n === 1 ? '1 vote' : `${n} votes`;
-      el.classList.remove('count-winner');
-    });
-    document.querySelectorAll('main .card').forEach(c => c.classList.remove('card-winner'));
-    const maxVotes = Math.max(0, ...Object.values(counts));
-    if (maxVotes > 0) {
-      document.querySelectorAll('main .vote-count').forEach(el => {
-        if ((counts[el.dataset.id] || 0) === maxVotes) {
-          el.classList.add('count-winner');
-          el.closest('.card').classList.add('card-winner');
-        }
-      });
-    }
-
-    // --- Time votes ---
-    timeCounts = {};
-    let myTimeVote = null;
-    for (const row of tData || []) {
-      timeCounts[row.time_slot] = (timeCounts[row.time_slot] || 0) + 1;
-      if (row.session_id === sessionId) myTimeVote = row.time_slot;
-    }
-    const timeVoteBtn = document.getElementById('time-vote-btn');
-    if (myTimeVote) timeSelect.value = myTimeVote;
-    timeVoteBtn.querySelector('.vote-label').textContent = myTimeVote ? '✓ Voted' : 'Vote';
-    timeVoteBtn.classList.toggle('voted', !!myTimeVote);
-    updateTimeCountDisplay();
-
-    lastRestaurantCounts = counts;
-    lastTimeCounts = timeCounts;
-    updateSummary(counts, timeCounts);
-  }
-
-  async function castVote(id) {
-    const { data: existing } = await sb.from('poll_votes')
-      .select('restaurant').eq('session_id', sessionId).eq('date', today).maybeSingle();
-    if (existing?.restaurant === id) {
-      await sb.from('poll_votes').delete().eq('session_id', sessionId).eq('date', today);
-    } else {
-      await sb.from('poll_votes').upsert(
-        { session_id: sessionId, date: today, restaurant: id },
-        { onConflict: 'session_id,date' }
-      );
-    }
-    loadVotes();
-  }
-
-  async function castTimeVote() {
-    const slot = timeSelect.value;
-    const { data: existing } = await sb.from('poll_time_votes')
-      .select('time_slot').eq('session_id', sessionId).eq('date', today).maybeSingle();
-    if (existing?.time_slot === slot) {
-      await sb.from('poll_time_votes').delete().eq('session_id', sessionId).eq('date', today);
-    } else {
-      await sb.from('poll_time_votes').upsert(
-        { session_id: sessionId, date: today, time_slot: slot },
-        { onConflict: 'session_id,date' }
-      );
-    }
-    loadVotes();
-  }
-
-  // Push updates to all connected clients in real time
-  sb.channel('poll')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'poll_votes', filter: `date=eq.${today}` }, loadVotes)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'poll_time_votes', filter: `date=eq.${today}` }, loadVotes)
-    .subscribe();
-
-  loadVotes();
-
-  // Keep the "in X min" / "X min ago" status fresh even without new votes
-  setInterval(() => updateSummary(lastRestaurantCounts, lastTimeCounts), 30000);
+  document.getElementById('menu-polymensa').href     = ethMenuUrl(9);
 </script>
 
 </body>
