@@ -16,6 +16,12 @@ This starts a static file server with live-reload (`live-server`, via `npx`) at 
 
 The site deploys automatically to GitHub Pages on every push to `main` via the included GitHub Actions workflow.
 
+## Images
+
+Each restaurant card carries a location or food photograph as a low-opacity background.
+The files live in `images/`; sources, authors, and licenses are listed in
+[images/CREDITS.md](images/CREDITS.md).
+
 ## License
 
 Licensed under the [MIT License](LICENSE).

@@ -7,13 +7,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style type="text/tailwindcss">
     @layer components {
-      .card        { @apply bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm; }
-      .card-header { @apply flex items-center gap-3 px-5 py-3; }
-      .card-body   { @apply border-t border-gray-200 px-5 py-3 flex flex-wrap gap-2 items-center; }
+      .card        { @apply relative bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm; }
+      /* Venue photo sits behind the card content at low opacity; see images/CREDITS.md */
+      .card::before { content: ""; background-image: var(--card-bg); @apply pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.28]; }
+      .card-header { @apply relative flex items-center gap-3 px-5 py-3; }
+      .card-body   { @apply relative border-t border-gray-200 px-5 py-3 flex flex-wrap gap-2 items-center; }
       .btn         { @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap no-underline; }
-      .btn-menu    { @apply bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
-      .btn-site    { @apply bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
-      .no-menu     { @apply text-sm text-gray-400 italic; }
+      .btn-menu    { @apply bg-white/85 border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
+      .btn-site    { @apply bg-white/85 border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
+      .no-menu     { @apply text-sm text-gray-500 italic; }
     }
   </style>
 </head>
@@ -27,7 +29,7 @@
 <main class="max-w-[1180px] mx-auto mt-6 px-6 pb-12 grid grid-cols-3 gap-3 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1">
 
   <!-- Hot Pasta -->
-  <div class="card">
+  <div class="card" style="--card-bg:url('images/hotpasta.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🍝</span>
       <span class="font-semibold">Hot Pasta</span>
@@ -39,7 +41,7 @@
   </div>
 
   <!-- La Fontana -->
-  <div class="card">
+  <div class="card" style="--card-bg:url('images/fontana.jpg')">
     <div class="card-header">
       <span class="shrink-0 inline-flex rounded-sm overflow-hidden w-8 h-6 border border-gray-200">
         <span class="flex-1 bg-[#009246]"></span>
@@ -55,7 +57,7 @@
   </div>
 
   <!-- Culmann -->
-  <div class="card">
+  <div class="card" style="--card-bg:url('images/culmann.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🍕</span>
       <span class="font-semibold">Culmann</span>
@@ -67,7 +69,7 @@
   </div>
 
   <!-- Asienmensa -->
-  <div class="card">
+  <div class="card" style="--card-bg:url('images/asienmensa.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🍚</span>
       <span class="font-semibold">Asienmensa</span>
@@ -79,7 +81,7 @@
   </div>
 
   <!-- Dozentenfoyer -->
-  <div class="card">
+  <div class="card" style="--card-bg:url('images/dozentenfoyer.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">👔</span>
       <span class="font-semibold">Dozentenfoyer</span>
@@ -91,7 +93,7 @@
   </div>
 
   <!-- Polymensa -->
-  <div class="card">
+  <div class="card" style="--card-bg:url('images/polymensa.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🚠</span>
       <span class="font-semibold">Polymensa</span>
@@ -103,7 +105,7 @@
   </div>
 
   <!-- Archimedes -->
-  <div class="card">
+  <div class="card" style="--card-bg:url('images/archimedes.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🥗</span>
       <span class="font-semibold">Archimedes</span>
@@ -115,7 +117,7 @@
   </div>
 
   <!-- Kleine Freiheit -->
-  <div class="card">
+  <div class="card" style="--card-bg:url('images/kleinefreiheit.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🎈</span>
       <span class="font-semibold">Kleine Freiheit</span>
@@ -142,7 +144,8 @@
 
 <footer class="text-center py-2 text-gray-400 text-sm">
   C2SM Lunch Menus &middot;
-  <a class="underline hover:text-gray-600" href="https://github.com/mjaehn/c2sm-lunch" target="_blank" rel="noopener noreferrer">GitHub</a>
+  <a class="underline hover:text-gray-600" href="https://github.com/mjaehn/c2sm-lunch" target="_blank" rel="noopener noreferrer">GitHub</a> &middot;
+  <a class="underline hover:text-gray-600" href="images/CREDITS.md" target="_blank" rel="noopener noreferrer">Image credits</a>
 </footer>
 
 <script>
