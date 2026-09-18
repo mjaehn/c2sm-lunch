@@ -33,7 +33,7 @@
       <span class="font-semibold">Hot Pasta</span>
     </div>
     <div class="card-body">
-      <a class="btn btn-menu" href="https://hotpasta.ch/wp-content/uploads/2023/01/HotPasta-Lunch.pdf" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
+      <a class="btn btn-menu" data-modal="frame" href="https://hotpasta.ch/wp-content/uploads/2023/01/HotPasta-Lunch.pdf" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://hotpasta.ch/" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
   </div>
@@ -61,7 +61,7 @@
       <span class="font-semibold">Culmann</span>
     </div>
     <div class="card-body">
-      <a class="btn btn-menu" href="https://edis-culmann.ch/speisekarte" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
+      <a class="btn btn-menu" data-modal="frame" href="https://edis-culmann.ch/speisekarte" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://edis-culmann.ch" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
   </div>
@@ -73,7 +73,7 @@
       <span class="font-semibold">Asienmensa</span>
     </div>
     <div class="card-body">
-      <a class="btn btn-menu" id="menu-asienmensa" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
+      <a class="btn btn-menu" data-modal="eth" data-facility="3" id="menu-asienmensa" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/clausiusbar.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
   </div>
@@ -85,7 +85,7 @@
       <span class="font-semibold">Dozentenfoyer</span>
     </div>
     <div class="card-body">
-      <a class="btn btn-menu" id="menu-dozentenfoyer" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
+      <a class="btn btn-menu" data-modal="eth" data-facility="5" id="menu-dozentenfoyer" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/dozentenfoyer.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
   </div>
@@ -97,7 +97,7 @@
       <span class="font-semibold">Polymensa</span>
     </div>
     <div class="card-body">
-      <a class="btn btn-menu" id="menu-polymensa" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
+      <a class="btn btn-menu" data-modal="eth" data-facility="9" id="menu-polymensa" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/polyterrasse.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
   </div>
@@ -109,7 +109,7 @@
       <span class="font-semibold">Archimedes</span>
     </div>
     <div class="card-body">
-      <a class="btn btn-menu" id="menu-archimedes" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
+      <a class="btn btn-menu" data-modal="eth" data-facility="8" id="menu-archimedes" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/archimedes.html" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
   </div>
@@ -121,15 +121,28 @@
       <span class="font-semibold">Kleine Freiheit</span>
     </div>
     <div class="card-body">
-      <a class="btn btn-menu" href="https://kleinefreiheit.ch/angebot" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
+      <a class="btn btn-menu" data-modal="frame" href="https://kleinefreiheit.ch/angebot" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
       <a class="btn btn-site" href="https://kleinefreiheit.ch/" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
     </div>
   </div>
 
 </main>
 
+<div id="modal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/50" data-close></div>
+  <div class="relative mx-auto my-6 flex h-[calc(100%-3rem)] w-[min(900px,calc(100%-2rem))] flex-col overflow-hidden rounded-xl bg-white shadow-xl">
+    <div class="flex items-center gap-3 border-b border-gray-200 px-5 py-3">
+      <span id="modal-title" class="font-semibold"></span>
+      <a id="modal-open" class="btn btn-site ml-auto !px-3 !py-1.5 !text-xs" target="_blank" rel="noopener noreferrer">Open ↗</a>
+      <button type="button" data-close aria-label="Close" class="rounded-md px-2 py-1 text-xl leading-none text-gray-500 hover:bg-gray-100 hover:text-gray-900">&times;</button>
+    </div>
+    <div id="modal-body" class="flex-1 overflow-auto"></div>
+  </div>
+</div>
+
 <footer class="text-center py-2 text-gray-400 text-sm">
-  C2SM Lunch Menus
+  C2SM Lunch Menus &middot;
+  <a class="underline hover:text-gray-600" href="https://github.com/mjaehn/c2sm-lunch" target="_blank" rel="noopener noreferrer">GitHub</a>
 </footer>
 
 <script>
@@ -150,6 +163,100 @@
   document.getElementById('menu-asienmensa').href    = ethMenuUrl(3);
   document.getElementById('menu-dozentenfoyer').href = ethMenuUrl(5);
   document.getElementById('menu-polymensa').href     = ethMenuUrl(9);
+
+  // Modal: show menus without leaving the page
+  const modal      = document.getElementById('modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalOpen  = document.getElementById('modal-open');
+  const modalBody  = document.getElementById('modal-body');
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  let lastFocused = null;
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    modalBody.innerHTML = '';
+    document.body.classList.remove('overflow-hidden');
+    if (lastFocused) lastFocused.focus();
+  }
+
+  modal.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+  });
+
+  document.querySelector('main').addEventListener('click', e => {
+    const link = e.target.closest('a[data-modal]');
+    if (!link || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+
+    lastFocused = link;
+    modalTitle.textContent = link.closest('.card').querySelector('.card-header .font-semibold').textContent;
+    modalOpen.href = link.href;
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+
+    if (link.dataset.modal === 'eth') showEthMenu(link.dataset.facility);
+    else showFrame(link.href);
+  });
+
+  // Third-party pages that allow embedding are shown in an iframe
+  function showFrame(url) {
+    modalBody.className = 'flex-1 overflow-hidden';
+    modalBody.innerHTML = '<iframe class="w-full h-full border-0" referrerpolicy="no-referrer"></iframe>';
+    modalBody.firstChild.src = url;
+  }
+
+  // ETH pages block embedding, so their menus are fetched from the public gastro API
+  const ethMenus = {};
+  const ethApiUrl = facility =>
+    `https://idapps.ethz.ch/cookpit-pub-services/v1/weeklyrotas?client-id=ethz-wcms&lang=en` +
+    `&rs-first=0&rs-size=50&valid-after=${today}&facility=${facility}`;
+
+  async function showEthMenu(facility) {
+    modalBody.className = 'flex-1 overflow-auto px-5 py-4';
+    modalBody.innerHTML = '<p class="no-menu">Loading menu...</p>';
+    try {
+      ethMenus[facility] ||= fetch(ethApiUrl(facility))
+        .then(r => r.ok ? r.json() : Promise.reject(new Error(r.status)))
+        .then(data => data['weekly-rota-array'] || [])
+        .catch(err => { delete ethMenus[facility]; throw err; });
+      renderEthMenu(await ethMenus[facility]);
+    } catch {
+      modalBody.innerHTML = '<p class="no-menu">Menu could not be loaded. Use "Open" to view it on the ETH website.</p>';
+    }
+  }
+
+  function renderEthMenu(rotas) {
+    const dayOfWeek = d.getDay() || 7;
+    const rota = rotas.find(r => r['valid-from'] <= today && today <= r['valid-to']);
+    const day = rota && (rota['day-of-week-array'] || []).find(x => x['day-of-week-code'] === dayOfWeek);
+    const mealTimes = ((day && day['opening-hour-array']) || []).flatMap(h => h['meal-time-array'] || []);
+
+    if (!mealTimes.length) {
+      modalBody.innerHTML = '<p class="no-menu">No menu available for today.</p>';
+      return;
+    }
+
+    modalBody.innerHTML = mealTimes.map(meal => `
+      <section class="mb-5 last:mb-0">
+        <h3 class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+          ${esc(meal.name)} &middot; ${esc(meal['time-from'])} - ${esc(meal['time-to'])}
+        </h3>
+        <ul class="space-y-2">${(meal['line-array'] || []).filter(l => l.meal).map(line => `
+          <li class="rounded-lg border border-gray-200 px-4 py-3">
+            <div class="text-xs uppercase tracking-wide text-gray-500">${esc(line.name)}</div>
+            <div class="font-medium">${esc(line.meal.name)}</div>
+            ${line.meal.description ? `<div class="mt-0.5 text-sm text-gray-600">${esc(line.meal.description)}</div>` : ''}
+            ${ethPrices(line.meal)}
+          </li>`).join('')}</ul>
+      </section>`).join('');
+  }
+
+  function ethPrices(meal) {
+    const prices = (meal['meal-price-array'] || [])
+      .map(p => `${p['customer-group-desc-short']} ${p.price.toFixed(2)}`).join(' \u00b7 ');
+    return prices ? `<div class="mt-1 text-xs text-gray-500">${esc(prices)}</div>` : '';
+  }
 </script>
 
 </body>
