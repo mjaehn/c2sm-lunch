@@ -7,15 +7,18 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style type="text/tailwindcss">
     @layer components {
-      .card        { @apply relative bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm; }
-      /* Venue photo sits behind the card content at low opacity; see images/CREDITS.md */
-      .card::before { content: ""; background-image: var(--card-bg); @apply pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.28]; }
-      .card-header { @apply relative flex items-center gap-3 px-5 py-3; }
-      .card-body   { @apply relative border-t border-gray-200 px-5 py-3 flex flex-wrap gap-2 items-center; }
+      /* Venue photo fills the card; see images/CREDITS.md */
+      .card        { @apply relative rounded-xl overflow-hidden shadow-md bg-gray-800 bg-cover bg-center transition-shadow hover:shadow-xl; background-image: var(--card-bg); }
+      /* Dark scrim keeps the white text readable over any photo */
+      .card::before { content: ""; @apply pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-black/60 to-black/75; }
+      .card-header { @apply relative flex items-center gap-3 px-5 pt-4 pb-3; }
+      .card-title  { @apply font-semibold text-white tracking-tight drop-shadow; }
+      .card-body   { @apply relative border-t border-white/20 px-5 py-3 flex flex-wrap gap-2 items-center; }
       .btn         { @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap no-underline; }
-      .btn-menu    { @apply bg-white/85 border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
-      .btn-site    { @apply bg-white/85 border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
-      .no-menu     { @apply text-sm text-gray-500 italic; }
+      .btn-menu    { @apply bg-white text-gray-900 border border-transparent hover:bg-gray-100; }
+      .btn-site    { @apply bg-white/20 text-white border border-white/40 backdrop-blur-sm hover:bg-white/30 hover:border-white/70; }
+      .btn-modal   { @apply bg-white border border-gray-300 text-gray-900 hover:bg-gray-50 hover:border-gray-400; }
+      .no-menu     { @apply text-sm text-white/70 italic; }
     }
   </style>
 </head>
@@ -32,7 +35,7 @@
   <div class="card" style="--card-bg:url('images/hotpasta.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🍝</span>
-      <span class="font-semibold">Hot Pasta</span>
+      <span class="card-title">Hot Pasta</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" data-modal="frame" href="https://hotpasta.ch/wp-content/uploads/2023/01/HotPasta-Lunch.pdf" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
@@ -43,12 +46,12 @@
   <!-- La Fontana -->
   <div class="card" style="--card-bg:url('images/fontana.jpg')">
     <div class="card-header">
-      <span class="shrink-0 inline-flex rounded-sm overflow-hidden w-8 h-6 border border-gray-200">
+      <span class="shrink-0 inline-flex rounded-sm overflow-hidden w-8 h-6 border border-white/50">
         <span class="flex-1 bg-[#009246]"></span>
         <span class="flex-1 bg-white"></span>
         <span class="flex-1 bg-[#ce2b37]"></span>
       </span>
-      <span class="font-semibold">La Fontana</span>
+      <span class="card-title">La Fontana</span>
     </div>
     <div class="card-body">
       <a class="btn btn-site" href="https://www.fontanafontana.ch/bistro" target="_blank" rel="noopener noreferrer">🌐 Website ↗</a>
@@ -60,7 +63,7 @@
   <div class="card" style="--card-bg:url('images/culmann.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🍕</span>
-      <span class="font-semibold">Culmann</span>
+      <span class="card-title">Culmann</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" data-modal="frame" href="https://edis-culmann.ch/speisekarte" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
@@ -72,7 +75,7 @@
   <div class="card" style="--card-bg:url('images/asienmensa.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🍚</span>
-      <span class="font-semibold">Asienmensa</span>
+      <span class="card-title">Asienmensa</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" data-modal="eth" data-facility="3" id="menu-asienmensa" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
@@ -84,7 +87,7 @@
   <div class="card" style="--card-bg:url('images/dozentenfoyer.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">👔</span>
-      <span class="font-semibold">Dozentenfoyer</span>
+      <span class="card-title">Dozentenfoyer</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" data-modal="eth" data-facility="5" id="menu-dozentenfoyer" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
@@ -96,7 +99,7 @@
   <div class="card" style="--card-bg:url('images/polymensa.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🚠</span>
-      <span class="font-semibold">Polymensa</span>
+      <span class="card-title">Polymensa</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" data-modal="eth" data-facility="9" id="menu-polymensa" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
@@ -108,7 +111,7 @@
   <div class="card" style="--card-bg:url('images/archimedes.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🥗</span>
-      <span class="font-semibold">Archimedes</span>
+      <span class="card-title">Archimedes</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" data-modal="eth" data-facility="8" id="menu-archimedes" href="#" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
@@ -120,7 +123,7 @@
   <div class="card" style="--card-bg:url('images/kleinefreiheit.jpg')">
     <div class="card-header">
       <span class="text-2xl leading-none shrink-0">🎈</span>
-      <span class="font-semibold">Kleine Freiheit</span>
+      <span class="card-title">Kleine Freiheit</span>
     </div>
     <div class="card-body">
       <a class="btn btn-menu" data-modal="frame" href="https://kleinefreiheit.ch/angebot" target="_blank" rel="noopener noreferrer">📋 Menu ↗</a>
@@ -135,7 +138,7 @@
   <div class="relative mx-auto my-6 flex h-[calc(100%-3rem)] w-[min(900px,calc(100%-2rem))] flex-col overflow-hidden rounded-xl bg-white shadow-xl">
     <div class="flex items-center gap-3 border-b border-gray-200 px-5 py-3">
       <span id="modal-title" class="font-semibold"></span>
-      <a id="modal-open" class="btn btn-site ml-auto !px-3 !py-1.5 !text-xs" target="_blank" rel="noopener noreferrer">Open ↗</a>
+      <a id="modal-open" class="btn btn-modal ml-auto !px-3 !py-1.5 !text-xs" target="_blank" rel="noopener noreferrer">Open ↗</a>
       <button type="button" data-close aria-label="Close" class="rounded-md px-2 py-1 text-xl leading-none text-gray-500 hover:bg-gray-100 hover:text-gray-900">&times;</button>
     </div>
     <div id="modal-body" class="flex-1 overflow-auto"></div>
@@ -193,7 +196,7 @@
     e.preventDefault();
 
     lastFocused = link;
-    modalTitle.textContent = link.closest('.card').querySelector('.card-header .font-semibold').textContent;
+    modalTitle.textContent = link.closest('.card').querySelector('.card-title').textContent;
     modalOpen.href = link.href;
     modal.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
