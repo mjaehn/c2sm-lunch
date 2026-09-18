@@ -1,7 +1,9 @@
 # Image Credits
 
-Card background images are sourced from Wikimedia Commons. Each file was resized and
-cropped to 900x340 pixels; no other modifications were made.
+Card background images are sourced from Wikimedia Commons, except where noted below.
+Each file was resized and cropped to 900x340 pixels. The Archimedes photograph was
+additionally brightened so that it reads consistently with the rest of the set;
+no other modifications were made.
 
 ## Hot Pasta (`hotpasta.jpg`)
 
@@ -47,10 +49,11 @@ cropped to 900x340 pixels; no other modifications were made.
 
 ## Archimedes (`archimedes.jpg`)
 
-- Title: Hauptgebäude der ETH Zürich and Polyterrasse 2022-09-24 03.jpg
-- Author: Leonhard Lenz
-- License: CC0
-- Source: https://commons.wikimedia.org/wiki/File:Hauptgeb%C3%A4ude_der_ETH_Z%C3%BCrich_and_Polyterrasse_2022-09-24_03.jpg
+- Title: Food Market Archimedes, interior view
+- Author: ETH Zurich
+- License: All rights reserved; not released under an open license. Taken from the
+  official ETH Zurich page for the restaurant and reproduced here to depict that venue.
+- Source: https://ethz.ch/de/campus/erleben/gastronomie-und-einkaufen/gastronomie/restaurants-und-cafeterias/zentrum/archimedes.html
 
 ## Kleine Freiheit (`kleinefreiheit.jpg`)
 
